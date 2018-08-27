@@ -21,7 +21,7 @@ var game = {
         document.getElementById('chancesLeft').innerHTML = "Guesses left : " + this.chances;
         setInterval(this.updateStats, 60);
     },
-    
+
     run: function () {
         document.onkeyup = function (event) {
             var checker = 0;
@@ -37,42 +37,38 @@ var game = {
                     correct = true;
                     var letter = event.key;
                     document.getElementById(elemId).innerHTML = letter;
-                    //this is doing this 4 times doe to invetal, set it outside
-                    game.howManyCorrect += 1;
-                    game.chances += -1;
-                    checker = 1;
-
-
-
+                    checker = true;
                 } else {
                     correct = false;
-                    game.chances += -1;
-
-
                 }
             }
             if (checker) {
                 game.indexx++;
-                //game.currentStage++;
-                checker = 0;
+                checker = false;
             }
-            if ((game.indexx >= (compare.length - 1)) && (game.howManyCorrect >= compare.length)) {
+            
+
+            if (correct) {
+                game.howManyCorrect++;
+                game.chances--;
+            } else {
+                game.chances--;
+            }
+
+            if (((game.indexx) === (compare.length - 1)) && (game.howManyCorrect === compare.length)) {
                 game.indexx = 0;
                 game.currentStage++;
-            } else if (game.indexx < (compare.length - 1) && (game.chances = 0)) {
+            } else if (game.chances === 0) {
                 alert("GAMEOVER");
             }
-
-
-
-
-
         }
 
     },
-    updateStats : function (){
+    updateStats: function () {
         document.getElementById('chancesLeft').innerHTML = "Guesses left : " + game.chances;
-        document.getElementById('zhowManyCorrect').innerHTML = "Guesses left : " + game.howManyCorrect;
+        document.getElementById('zhowManyCorrect').innerHTML = "How many correct : " + game.howManyCorrect;
+        document.getElementById('indexcheck').innerHTML = "Current index : " + game.indexx;
+
     }
 
 }
