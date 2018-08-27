@@ -7,7 +7,7 @@ function startGame() {
 }
 
 var game = {
-    wordBank: ["mario", "Snake", "Ness", "Megaman", "Zero", "Skull Kid"],
+    wordBank: ["mario", "snake", "ness", "megaman", "zero", "Skull Kid"],
     id: ['a', 'b', 'c', 'd', 'e', 'f'],
     indexx: 0,
     stage: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -25,17 +25,18 @@ var game = {
     run: function () {
         document.onkeyup = function (event) {
             var checker = 0;
-            var correct;
+            var correct = false;
             var stageFinish;
             var elemId = game.id[game.indexx];
             var compare = game.wordBank[game.currentStage];
             var comLetters = compare.split('');
             console.log(comLetters);
-            for (var z = 0; z < compare.length; z++) {
+            for (var z = 0; z < comLetters.length; z++) {
                 // console.log(compare.charAt([z]));
-                if (event.key === compare.charAt([z])) {
+                if (event.key === comLetters[z]) {
                     correct = true;
                     var letter = event.key;
+                    //if word is more than 6 character, will throw a error bc they are only 6 spaces(ids) for the characters in the html doc
                     document.getElementById(elemId).innerHTML = letter;
                     checker = true;
                 } else {
@@ -55,12 +56,18 @@ var game = {
                 game.chances--;
             }
 
-            if (((game.indexx) === (compare.length - 1)) && (game.howManyCorrect === compare.length)) {
-                game.indexx = 0;
+            if ((game.indexx) === (compare.length)) {
                 game.currentStage++;
+                game.indexx = 0;
+                game.chances = 10;
+                game.id.forEach((element, i) => {
+                    document.getElementById(element).innerHTML = '';
+                });
+                
             } else if (game.chances === 0) {
                 alert("GAMEOVER");
             }
+            console.log(game.currentStage);
         }
 
     },
@@ -68,6 +75,7 @@ var game = {
         document.getElementById('chancesLeft').innerHTML = "Guesses left : " + game.chances;
         document.getElementById('zhowManyCorrect').innerHTML = "How many correct : " + game.howManyCorrect;
         document.getElementById('indexcheck').innerHTML = "Current index : " + game.indexx;
+        
 
     }
 
