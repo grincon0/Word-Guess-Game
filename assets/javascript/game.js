@@ -1,6 +1,7 @@
-var alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j','k', 'l', 'm', 'n', 'o','p', 'q', 'r', 's', 't','u', 'v', 'w', 'x', 'y', 'z'];
+var alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 var wordDiv = document.getElementById("pldiv");
 var chancesDiv = document.getElementById("chancesLeft");
+var guessedDiv = document.getElementById("alreadyGuessed");
 
 
 function startGame() {
@@ -10,15 +11,16 @@ function startGame() {
 document.onkeyup = function (event) {
     var input = event.key;
     var isValid = false;
-    for (var i = 0; i < alpha.length; i++){
-        if(event.key == alpha[i]){
+    for (var i = 0; i < alpha.length; i++) {
+        if (event.key == alpha[i]) {
             isValid = true;
         }
     }
-    if (isValid){
+    if (isValid) {
         game.lettersGuessed.push(input);
-        game.checkerUserInput(input);
-    }else{
+        game.checkUserInput(input);
+        game.nextStage();
+    } else {
         game.lettersGuessed.push(input);
         game.errorsMade++;
         game.chances += -1;
@@ -26,64 +28,109 @@ document.onkeyup = function (event) {
 }
 
 var game = {
-    wordBank: ["margarita", "beer", "tequila"],
-    word : [],
-    placeholder : [],
-    lettersGuessed : [],
-    chances : 0,
-    errorsMade : 0,
+    wordBank: ["margarita", "beer", "tequila", "sake", "rum"],
+    word: [],
+    placeholder: [],
+    lettersGuessed: [],
+    chances: 0,
+    errorsMade: 0,
+    stageCounter: 0,
+    contBoolean: false,
     start: function () {
         game.word = this.wordBank[Math.floor(Math.random() * this.wordBank.length)];
         this.calculateChances();
         this.initPlaceholder(this.word);
         this.interval = setInterval(this.updateInts, 100);
-        
+
     },
-    calculateChances : function () {
+    continue: function () {
+        game.word = this.wordBank[Math.floor(Math.random() * this.wordBank.length)];
+        this.calculateChances();
+        this.initPlaceholder(this.word);
+    },
+    calculateChances: function () {
         game.chances = Math.abs(this.word.length + (this.word.length - (this.word.length - 3)));
     },
     initPlaceholder: function (word) {
-        for (var i = 0; i < this.word.length; i++){
+        for (var i = 0; i < this.word.length; i++) {
             this.placeholder[i] = (false);
         }
     },
-    checkUserInput : function (input) {
+    checkUserInput: function (input) {
         var inWord;
-        for( var i = 0; i < this.word.length; i++){
-            if(input === this.word.charAt([i])) {
+        for (var i = 0; i < this.word.length; i++) {
+            if (input === this.word.charAt([i])) {
                 this.placeholder[i] = true;
                 inWord = true;
             } else {
                 inWord = false;
             }
         }
-        if(!inWord){
+        if (!inWord) {
             this.chances--;
             this.errorsMade;
-        }else{
+        } else {
             this.chances--;
         }
         this.updateDOM();
+        this.printGuess();
+
+
     },
-    updateDOM: function (){
-        var stringTrans="";
-        for (var i = 0; i < this.placeholder.length; i++){
-            if(this.placeholder[i]){
+    updateDOM: function () {
+        var stringTrans = "";
+        for (var i = 0; i < this.placeholder.length; i++) {
+            if (this.placeholder[i]) {
                 stringTrans += this.word.charAt([i]);
-            }else{
+            } else {
                 stringTrans += "_";
             }
         }
         console.log(stringTrans);
         document.getElementById('a').innerHTML = stringTrans;
     },
+    printGuess: function () {
+        var string = "";
+        for (var i = 0; i < this.lettersGuessed.length; i++) {
+            string += ` ${this.lettersGuessed[i]} `;
+
+        }
+        document.getElementById("alreadyGuessed").innerHTML = "Guessed : " + string;
+    },
+    nextStage: function () {
+        this.stageCounter = 0;
+        for (var i = 0; i < this.placeholder.length; i++) {
+            if (this.placeholder[i] === true) {
+                this.stageCounter++;
+            }
+        }
+        if (this.stageCounter >= this.placeholder.length) {
+            for (var i = 0; i < this.wordBank.length; i++) {
+                if (this.wordBank[i] === this.word[0]) {
+                    var index = this.wordBank.indexOf[i];
+                    this.wordBank.splice(index, 1);
+                    this.contBoolean = true;
+                }
+            }
+        }
+        if (this.contBoolean === true) {
+            //choose another word to guess
+            //add one point to win var
+            this.continue();
+            this.initPlaceholder();
+            this.updateDOM();
+            this.stageCounter = 0;
+            this.contBoolean = false;
+        }
+
+    },
 
 
-   updateInts: function () {
-        document.getElementById('chancesLeft').innerHTML = "Guesses left : " +  game.chances;
+    updateInts: function () {
+        document.getElementById('chancesLeft').innerHTML = "Guesses left : " + game.chances;
         document.getElementById('errors').innerHTML = "Errors made : " + game.errorsMade;
-       // document.getElementById('indexcheck').innerHTML = "Current index : " + game.indexx;
-        
+        // document.getElementById('indexcheck').innerHTML = "Current index : " + game.indexx;
+
 
     }
 
