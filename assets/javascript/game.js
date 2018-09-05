@@ -11,22 +11,32 @@ function startGame() {
 document.onkeyup = function (event) {
     var input = event.key;
     var isValid = false;
-    for (var i = 0; i < alpha.length; i++) {
-        if (event.key == alpha[i]) {
-            isValid = true;
+
+    if(!game.isGameOver){
+        for (var i = 0; i < alpha.length; i++) {
+            if (event.key == alpha[i]) {
+                isValid = true;
+            }
         }
+        if (isValid) {
+            game.lettersGuessed.push(input);
+            game.checkUserInput(input);
+            
+        } else {
+            game.lettersGuessed.push(input);
+            game.errorsMade++;
+            game.chances += -1;
+        }
+
+        game.nextStage();
+
+    }else{
+        return;
     }
-    if (isValid) {
-        game.lettersGuessed.push(input);
-        game.checkUserInput(input);
-        
-    } else {
-        game.lettersGuessed.push(input);
-        game.errorsMade++;
-        game.chances += -1;
-    }
-    game.nextStage();
+    
+    
 }
+
 
 var game = {
     wordBank: ["margarita", "beer", "tequila", "sake", "rum"],
@@ -71,12 +81,13 @@ var game = {
         }
         if (!inWord) {
             this.chances--;
-            this.errorsMade;
+            
         } else {
             this.chances--;
         }
         this.updateDOM();
         this.printGuess();
+        this.checkGameOver();
 
 
     },
@@ -128,6 +139,26 @@ var game = {
             this.contBoolean = false;
         }
 
+    },
+    checkGameOver : function (){
+        if(this.errorsMade >= this.word.length || this.chances < 0){
+            this.isGameOver = true;
+
+        }
+        if (this.isGameOver){
+            clearInterval(this.start);
+            alert("GAMEOVER");
+            this.retry();
+        }
+        
+    },
+    retry : function (){
+        document.getElementById('test').innerHTML = 'Press SPACE bar to try again';
+        document.onkeyup = function (event){
+            if(event.which === 32){
+                location.reload();
+            }
+        }
     },
 
 
