@@ -19,12 +19,13 @@ document.onkeyup = function (event) {
     if (isValid) {
         game.lettersGuessed.push(input);
         game.checkUserInput(input);
-        game.nextStage();
+        
     } else {
         game.lettersGuessed.push(input);
         game.errorsMade++;
         game.chances += -1;
     }
+    game.nextStage();
 }
 
 var game = {
@@ -32,10 +33,12 @@ var game = {
     word: [],
     placeholder: [],
     lettersGuessed: [],
+    wins: 0,
     chances: 0,
     errorsMade: 0,
     stageCounter: 0,
     contBoolean: false,
+    isGameOver: false,
     start: function () {
         game.word = this.wordBank[Math.floor(Math.random() * this.wordBank.length)];
         this.calculateChances();
@@ -103,22 +106,24 @@ var game = {
             if (this.placeholder[i] === true) {
                 this.stageCounter++;
             }
+            
         }
         if (this.stageCounter >= this.placeholder.length) {
             for (var i = 0; i < this.wordBank.length; i++) {
-                if (this.wordBank[i] === this.word[0]) {
+                if (this.wordBank[i] === this.word) {
                     var index = this.wordBank.indexOf[i];
                     this.wordBank.splice(index, 1);
                     this.contBoolean = true;
                 }
             }
         }
-        if (this.contBoolean === true) {
+        
+        if (this.contBoolean) {
             //choose another word to guess
             //add one point to win var
             this.continue();
-            this.initPlaceholder();
-            this.updateDOM();
+            this.wins++;
+            this.lettersGuessed = [];
             this.stageCounter = 0;
             this.contBoolean = false;
         }
@@ -129,6 +134,7 @@ var game = {
     updateInts: function () {
         document.getElementById('chancesLeft').innerHTML = "Guesses left : " + game.chances;
         document.getElementById('errors').innerHTML = "Errors made : " + game.errorsMade;
+        document.getElementById('wins').innerHTML = "Wins : " + game.wins;
         // document.getElementById('indexcheck').innerHTML = "Current index : " + game.indexx;
 
 
