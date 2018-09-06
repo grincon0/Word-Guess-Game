@@ -1,5 +1,5 @@
 var alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
+var getTrophy = new Audio('assets/sound/heal 1.wav');
 
 function startGame() {
     game.start();
@@ -207,6 +207,7 @@ var game = {
             img.src = "assets/images/lblue1.png";
             img.alt = "For the first win!";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         } else if (this.wins === 2 && this.isChecked) {
             var img = document.createElement("img");
