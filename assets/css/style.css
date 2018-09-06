@@ -1,5 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Ceviche+One|Chela+One|Freckle+Face|VT323');
+
+body{
+    background-color: tan;
+}
+
 .a, .b, .c, .d, .e, .f{
-    font-size:15px;
-    padding: 8px;
-    border-bottom: 2px solid black;
+    background-color: tan;
+    
+    
+}
+
+
+
+.a h1{
+    font-family: 'Ceviche One', cursive;
+    font-size: 80px;
+    text-align: center;
+}
+.a p{
+    font-family: 'Freckle Face', cursive;
+}
+
+.b p{
+    font-size: 20px;
+    font-family: 'Freckle Face', cursive;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+
+}
+.c h1{
+    font-family: 'Chela One', cursive;
+    text-align: center;
+}
+
+.water{
+    border: 6px solid #05c5ff;
+    border-radius: 3px;
 }
