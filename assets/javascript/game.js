@@ -12,23 +12,25 @@ document.onkeyup = function (event) {
     var input = event.key;
     var isValid = false;
 
-    if(!game.isGameOver){
+    // add a boolen hat chechsk to see if a word has been compeltered if so stop, then press a specific button to keep going, which set that boolean to false
+    if(!game.isGameOver && game.freeKeyReg){
         for (var i = 0; i < alpha.length; i++) {
             if (event.key == alpha[i]) {
                 isValid = true;
             }
         }
-        if (isValid) {
+
+        
+        if (isValid && !game.lettersGuessed.includes(input)) {
             game.lettersGuessed.push(input);
             game.checkUserInput(input);
+            game.checkWordComplete();
             
         } else {
-            game.lettersGuessed.push(input);
-            game.errorsMade++;
-            game.chances += -1;
+            return;
         }
 
-        game.nextStage();
+        
 
     }else{
         return;
@@ -49,6 +51,9 @@ var game = {
     stageCounter: 0,
     contBoolean: false,
     isGameOver: false,
+    isWordComplete: false,
+    freeKeyReg : true,
+    isNextStageReady : false,
     start: function () {
         game.word = this.wordBank[Math.floor(Math.random() * this.wordBank.length)];
         this.calculateChances();
@@ -82,6 +87,7 @@ var game = {
         if (!inWord) {
             this.chances--;
             
+            
         } else {
             this.chances--;
         }
@@ -112,6 +118,8 @@ var game = {
         document.getElementById("alreadyGuessed").innerHTML = "Guessed : " + string;
     },
     nextStage: function () {
+        
+        console.log("works");
         this.stageCounter = 0;
         for (var i = 0; i < this.placeholder.length; i++) {
             if (this.placeholder[i] === true) {
@@ -132,16 +140,20 @@ var game = {
         if (this.contBoolean) {
             //choose another word to guess
             //add one point to win var
-            this.continue();
             this.wins++;
             this.lettersGuessed = [];
             this.stageCounter = 0;
             this.contBoolean = false;
+            this.continue();
+            setTimeout(function(){
+                game.freeKeyReg = true;
+            }, 100);
+            
         }
 
     },
     checkGameOver : function (){
-        if(this.errorsMade >= this.word.length || this.chances < 0){
+        if( this.chances < 0){
             this.isGameOver = true;
 
         }
@@ -152,6 +164,39 @@ var game = {
         }
         
     },
+    checkWordComplete : function (){
+        var counter = 0;
+        for( var i = 0; i < this.placeholder.length; i++){
+            if(this.placeholder[i] === true){
+                counter++;
+            }
+        }
+        if(counter >= this.placeholder.length){
+            this.isWordComplete = true;
+            this.freeKeyReg = false;
+            game.nextWordKeyDown();
+        }
+    },
+    nextWordKeyDown : function () {
+        console.log("press s");
+        var counter = 0;
+            document.onkeydown = function (event){
+                
+                if(event.key){
+                    counter++;
+                }
+                if(counter = 1){
+                    game.nextStage();
+                } else if(counter = 2){
+                    game.freeKeyReg = true;
+                }else{
+                    return;
+                }
+            }
+
+        
+    },
+
     retry : function (){
         document.getElementById('test').innerHTML = 'Press SPACE bar to try again';
         document.onkeyup = function (event){
