@@ -13,28 +13,56 @@ body{
 
 
 .a h1{
+    
     font-family: 'Ceviche One', cursive;
     font-size: 80px;
     text-align: center;
+    padding-bottom: 50px;
 }
 .a p{
     font-family: 'Freckle Face', cursive;
 }
 
 .b p{
-    font-size: 20px;
+    font-size: 35px;
     font-family: 'Freckle Face', cursive;
-    padding: 10px;
-    margin: 10px;
+    padding: 25px;
+    margin: 25px;
     text-align: center;
 
 }
 .c h1{
-    font-family: 'Chela One', cursive;
+    font-size: 80px;
+    font-family: 'Freckle Face', cursive;
     text-align: center;
 }
 
-.water{
+.head{
     border: 6px solid #05c5ff;
     border-radius: 3px;
+    background-image: url('../images/titleback.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+}
+
+
+.water{
+    background-image: url('../images/titleback.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 0%, 40%;
+    border: 6px solid #05c5ff;
+    border-radius: 3px;
+}
+
+.troph{
+    background-image: url('../images/titleback.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 25%, 40%;
+    
+    border: 6px solid #05c5ff;
+    border-radius: 3px;
+
 }
