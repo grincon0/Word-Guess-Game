@@ -31,6 +31,10 @@ body{
     text-align: center;
 
 }
+.answerBox{
+    border: 6px solid #05c5ff;
+    border-radius: 3px;
+}
 .c h1{
     font-size: 80px;
     font-family: 'Freckle Face', cursive;

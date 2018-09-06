@@ -1,13 +1,29 @@
 var alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 var getTrophy = new Audio('assets/sound/heal 1.wav');
+var lose = new Audio('assets/sound/ABadDream.mp3');
+var runtime = new Audio('assets/sound/OrangeCoast.mp3');
 
 function startGame() {
+    
     game.start();
+    document.getElementById("starter").innerText = "Press any key to start the game";
+    
 }
 
 document.onkeyup = function (event) {
     var input = event.key;
     var isValid = false;
+    if(!game.isPlaying){
+        runtime.play();
+        game.isPlaying = true;
+    }
+    if(game.isStart){
+        document.getElementById("starter").innerText = "";
+        game.isStart = false;
+    }
+    
+
+
 
     // add a boolen hat chechsk to see if a word has been compeltered if so stop, then press a specific button to keep going, which set that boolean to false
     if (!game.isGameOver && game.freeKeyReg) {
@@ -19,11 +35,14 @@ document.onkeyup = function (event) {
 
 
         if (isValid && !game.lettersGuessed.includes(input)) {
+            game.isStart = false;
             game.lettersGuessed.push(input);
             game.checkUserInput(input);
             game.checkWordComplete();
             game.checkRewards();
             console.log(game.word);
+            
+            
 
 
         } else {
@@ -57,12 +76,23 @@ var game = {
     freeKeyReg: true,
     isNextStageReady: false,
     isChecked: false,
+    isStart : true,
+    isPlaying : false,
     start: function () {
         game.word = this.wordBank[Math.floor(Math.random() * this.wordBank.length)];
         this.calculateChances();
         this.initPlaceholder(this.word);
         this.interval = setInterval(this.updateInts, 100);
+        runtime.play();
 
+    },
+    startScreen : function () {
+        if(isStart){
+            document.getElementById("start").innerHTML = "Press Space to being";
+        }else{
+            document.getElementById("start").innerHTML = "";
+        }
+        
     },
     continue: function () {
         game.word = this.wordBank[Math.floor(Math.random() * this.wordBank.length)];
@@ -161,8 +191,11 @@ var game = {
 
         }
         if (this.isGameOver) {
+            
             clearInterval(this.start);
+            runtime.pause();
             alert("GAMEOVER");
+            lose.play();
             this.retry();
         }
 
@@ -214,102 +247,119 @@ var game = {
             img.src = "assets/images/trophies/pro1.png";
             img.alt = "Two wins, too good.";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else if (this.wins === 3 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/lred1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         } else if (this.wins === 4 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/lseagreen1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else if (this.wins === 5 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/lgreen1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         } else if (this.wins === 6 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/dblue1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else if (this.wins === 7 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/bird1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         } else if (this.wins === 8 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/pro2.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         }else if (this.wins === 9 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/pro3.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         }  else if (this.wins === 10 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/pro4.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else if (this.wins === 11 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/pro5.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         } else if (this.wins === 12 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/pro6.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else if (this.wins === 13 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/supertrop1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         } else if (this.wins === 14 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/be1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else if (this.wins === 15 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/be2.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         }  else if (this.wins === 16 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/be3.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else if (this.wins === 17 && !this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/palm1.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = true;
         } else if (this.wins === 18 && this.isChecked){
             var img = document.createElement("img");
             img.src = "assets/images/wave.png";
             img.alt = "Three's a company";
             document.getElementById("holder").appendChild(img);
+            getTrophy.play();
             this.isChecked = false;
         } else{
             return;
@@ -323,7 +373,7 @@ var game = {
     },
 
     retry: function () {
-        document.getElementById('test').innerHTML = 'Press SPACE bar to try again';
+        document.getElementById('starter').innerHTML = 'Press SPACE bar to try again';
         document.onkeyup = function (event) {
             if (event.which === 32) {
                 location.reload();
@@ -335,9 +385,6 @@ var game = {
     updateInts: function () {
         document.getElementById('chancesLeft').innerHTML = "Guesses left : " + game.chances;
         document.getElementById('wins').innerHTML = "Wins : " + game.wins;
-        // document.getElementById('indexcheck').innerHTML = "Current index : " + game.indexx;
-
-
     }
 
 }
