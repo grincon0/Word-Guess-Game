@@ -4,7 +4,6 @@ var lose = new Audio('assets/sound/ABadDream.mp3');
 var runtime = new Audio('assets/sound/OrangeCoast.mp3');
 
 function startGame() {
-    
     game.start();
     document.getElementById("starter").innerText = "Press any key to start the game";
     
@@ -21,10 +20,6 @@ document.onkeyup = function (event) {
         document.getElementById("starter").innerText = "";
         game.isStart = false;
     }
-    
-
-
-
     // add a boolen hat chechsk to see if a word has been compeltered if so stop, then press a specific button to keep going, which set that boolean to false
     if (!game.isGameOver && game.freeKeyReg) {
         for (var i = 0; i < alpha.length; i++) {
@@ -32,8 +27,6 @@ document.onkeyup = function (event) {
                 isValid = true;
             }
         }
-
-
         if (isValid && !game.lettersGuessed.includes(input)) {
             game.isStart = false;
             game.lettersGuessed.push(input);
@@ -41,20 +34,12 @@ document.onkeyup = function (event) {
             game.checkWordComplete();
             game.checkRewards();
             console.log(game.word);
-            
-            
-
-
         } else {
             return;
         }
-
-
-
     } else {
         return;
     }
-
 
 }
 
@@ -119,16 +104,12 @@ var game = {
         }
         if (!inWord) {
             this.chances--;
-
-
         } else {
             this.chances--;
         }
         this.updateDOM();
         this.printGuess();
         this.checkGameOver();
-
-
     },
     updateDOM: function () {
         var stringTrans = "";
@@ -151,14 +132,12 @@ var game = {
         document.getElementById("alreadyGuessed").innerHTML = "Guessed : " + string;
     },
     nextStage: function () {
-
         console.log("works");
         this.stageCounter = 0;
         for (var i = 0; i < this.placeholder.length; i++) {
             if (this.placeholder[i] === true) {
                 this.stageCounter++;
             }
-
         }
         if (this.stageCounter >= this.placeholder.length) {
             for (var i = 0; i < this.wordBank.length; i++) {
@@ -169,7 +148,6 @@ var game = {
                 }
             }
         }
-
         if (this.contBoolean === true) {
             //choose another word to guess
             //add one point to win var
@@ -188,7 +166,6 @@ var game = {
     checkGameOver: function () {
         if (this.chances < 0) {
             this.isGameOver = true;
-
         }
         if (this.isGameOver) {
             
@@ -198,7 +175,6 @@ var game = {
             lose.play();
             this.retry();
         }
-
     },
     checkWordComplete: function () {
         var counter = 0;
@@ -214,7 +190,7 @@ var game = {
         }
     },
     nextWordKeyDown: function () {
-        console.log("press s");
+        
         var counter = 0;
         document.onkeydown = function (event) {
 
@@ -229,12 +205,8 @@ var game = {
                 return;
             }
         }
-
-
     },
     checkRewards: function () {
-
-
         if (this.wins === 1 && !this.isChecked) {
             var img = document.createElement("img");
             img.src = "assets/images/lblue1.png";
@@ -244,7 +216,7 @@ var game = {
             this.isChecked = true;
         } else if (this.wins === 2 && this.isChecked) {
             var img = document.createElement("img");
-            img.src = "assets/images/trophies/pro1.png";
+            img.src = "assets/images/pro1.png";
             img.alt = "Two wins, too good.";
             document.getElementById("holder").appendChild(img);
             getTrophy.play();
@@ -364,12 +336,6 @@ var game = {
         } else{
             return;
         }
-
-
-
-
-
-
     },
 
     retry: function () {
@@ -380,8 +346,6 @@ var game = {
             }
         }
     },
-
-
     updateInts: function () {
         document.getElementById('chancesLeft').innerHTML = "Guesses left : " + game.chances;
         document.getElementById('wins').innerHTML = "Wins : " + game.wins;
