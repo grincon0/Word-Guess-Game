@@ -20,7 +20,6 @@ document.onkeyup = function (event) {
         document.getElementById("starter").innerText = "";
         game.isStart = false;
     }
-    // add a boolen hat chechsk to see if a word has been compeltered if so stop, then press a specific button to keep going, which set that boolean to false
     if (!game.isGameOver && game.freeKeyReg) {
         for (var i = 0; i < alpha.length; i++) {
             if (event.key == alpha[i]) {
@@ -149,8 +148,6 @@ var game = {
             }
         }
         if (this.contBoolean === true) {
-            //choose another word to guess
-            //add one point to win var
             this.wins++;
             this.lettersGuessed = [];
             this.stageCounter = 0;
@@ -168,10 +165,10 @@ var game = {
             this.isGameOver = true;
         }
         if (this.isGameOver) {
-            
+    
             clearInterval(this.start);
             runtime.pause();
-            alert("GAMEOVER");
+            document.getElementById("go").innerText = "GAME OVER";
             lose.play();
             this.retry();
         }
